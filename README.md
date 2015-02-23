@@ -1,4 +1,4 @@
-This is a school project. Goal was to create a syntax and translate it into readable machine code. More [details](http://iamlookingforaninternship.com/ressources/lt.pdf) (in french).
+This is a school project. Goal was to create a syntax and translate it into readable machine code. More details [here](http://iamlookingforaninternship.com/ressources/lt.pdf) (in french).
 
 # Syntaxe 
 
