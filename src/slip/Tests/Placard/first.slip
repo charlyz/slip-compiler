@@ -1,0 +1,8 @@
+main(){
+x = new/3;
+x.1 = 10;
+x.2 = null;
+x.3 = x;
+this.1 = this;
+x = x.1;
+}

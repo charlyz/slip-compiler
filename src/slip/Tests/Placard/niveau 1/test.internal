@@ -1,0 +1,1 @@
+method main(){ lab2  [ lab2 : x#1 := 0 ; go to lab1]} lab1 result#0end of method main.

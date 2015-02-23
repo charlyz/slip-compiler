@@ -1,0 +1,28 @@
+//AAAAA COP  ii, aaaaaa(jj) //
+//AAAAA COPP ii, jj         //
+8678    LIT  F(1.1)         //        
+9623    LIT  F(1.2)         //
+23450   LIT  F(1.3)         //
+12620   LIT  F(1.4)         //
+// Sous-programme de calcul de a*b - c*d (en virgule flottante)
+// Liste des paramètres : a, b, c, d (par valeur) ; r (par adresse)
+// Postcondition        : r = a*b - c*d
+//AAAAA COP  ii, aaaaaa(jj) //
+//AAAAA COPP ii, jj         //
+3000    STM   2, 3050    // Sauver R2 à la fin du sous-programme.
+3004    STM   3, 3054    // Sauver R3 à la fin du sous-programme (derrière R2).
+3008    LDM   0, 0(1)    // R0 = a
+3012    LDM   2, 4(1)    // R2 = b
+3016    MULF  0, 2       // R0 = a * b
+3018    LDM   2, 8(1)    // R2 = c
+3022    LDM   3, 12(1)   // R3 = d
+3026    MULF  2, 3       // R2 = c * d
+3028    SUBF  0, 2       // R0 = a * b - c * d
+3030    LDM   1, 16(1)   // R1 = ADR(r)
+3034    STM   0, 0(1)    // r = a * b - c * d
+3038    LDM   2, 3050    // restaurer R2
+3042    LDM   3, 3054    // restaurer R3
+3046    JUMP  0, 0(15)   // retour de sous-programme
+// ATTENTION : UN FICHIER LMA DOIT SE TERMINER PAR UNE LIGNE VIDE.
+// AUTREMENT DIT : DEUX "RETURN" SUCCESSIFS.
+

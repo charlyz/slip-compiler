@@ -1,0 +1,79 @@
+//AAAAA COP  ii, aaaaaa(jj) 
+2000    LDA   1, 11        // (Passage du premier paramètre :
+2004    STM   1, 2034      //  la longueur de la zone donnée)
+2008    LDA   1, 2046      // (Passage du second paramètre : 
+2012    STM   1, 2038      //  l'adresse de la zone donnée)
+2016    LDA   1, 2057      // (Passage du troisième paramètre : 
+2020    STM   1, 2042      //  l'adresse de la zone résultat)
+2024    LDA   1, 2034      // R1 est l'adresse de la zone des paramètres.
+2028    JUMP 15, 4500      // appel du sous-programme
+2032    HALT  0, 0
+//   La zone des paramètres va de 2034 à 2045
+2046    LIT  C'ABCDEFGHIJK' // zone donnée (à renverser).
+//   La zone résultat va de 2057 à 2067.
+//
+// Sous-programme pour renverser une suite de caractères.
+// ------------------------------------------------------
+// Conventions : on utilise les conventions standard de passage des
+// paramètres. Donc, lors d'un appel du sous-programme, l'adresse de
+// la zone des paramètres est communiquée au sous-programme via
+// le registre \Reg{1} ; 
+// l'adresse de retour est communiquée via le registre \Reg{15}. 
+//
+// Paramètres : Le premier paramètre (passé par valeur) est
+// ----------   la longueur (nombre de bytes) de la suite à renverser ;
+// le deuxième paramètre (passé par adresse) est la zone de mémoire
+// contenant la suite à renverser ; 
+// le troisième paramètre (passé par adresse) est la zone où sera 
+// placée la suite renversée.
+//
+// Précondition : (a) le premier paramètre est égal à la longueur
+// ------------   du second ; (b) la longueur du troisième paramètre
+// est suffisante. 
+//
+// Postcondition : Le second paramètre est inchangé ; 
+// -------------   le troisième paramètre contient une suite
+// de caractères égale à celle du second, renversée ;
+// la mémoire est inchangée (sauf la zone du résultat) ;
+// les registres R5 à R15 sont inchangés.
+//
+// Invariant :
+// 
+// zone à renverser :
+//                          R2                  R0
+// +----------------------+-------------------+
+// |    parcouru          |                   |
+// +----------------------+-------------------+
+//
+// zone à renverser :
+//
+//                     R3
+//                     |            
+//                    \|/
+// +-----------------+------------------------+
+// |                 |      renversé          |
+// +-----------------+------------------------+
+//
+// Sauver les registres : (omis)
+//
+// INIT :
+//AAAAA COP  ii, aaaaaa(jj) 
+4500    LDM   2,      4(1) // R2 est l'adresse de la zone donnée.
+4504    LDM   0,      0(1) // R0 est la longueur de cette zone.
+4508    LDM   3,      8(1) // R3 est l'adresse de la zone résultat.
+4512    ADD   3, 0         // R3 est juste après la zone résultat.
+4514    ADD   0, 2         // R0 est juste après la zone donnée.
+// B : R2 = R0
+4516    COMP  0, 2
+4518    JE    0,      0(15)// Retour à l'appelant
+// ITER :
+4522    SUBA  3, 1
+4526    LDC   4,      0(2)
+4530    STC   4,      0(3)
+4534    ADDA  2, 1
+4538    JUMP     4516    
+// Restaurer les registres : (omis)
+
+
+
+

@@ -1,0 +1,43 @@
+00000   LDA  11, 00000      // Initialisation de F à 0.
+00004   LDA  12, 00116      // Initialisation de S à la plus petite adresse libre.
+00008   LDA  13, 65524      // Initialisation de H à la plus grande adresse libre + 1.
+00012   JUMP 10, 00022      // Saut au début de la méthode statique main(0).
+65532   LIT  C'STOP'        // 
+00016   LDM  14, 65532      // 
+00020   HALT  0, 0          // Arrêt du programme.
+// method main()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00022   LDA   0, 00020 (12) // R_0 contient la nouvelle valeur de S.
+00026   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00028   JLE   0, 00038      // Si elle est inférieure ou égale, c'est OK.
+65528   LIT  C'STOV'        // 
+00032   LDM  14, 65528      // Sinon, afficher STack OVerflow.
+00036   HALT  0, 0          // Arrêter le programme.
+00038   STM  11, 00012 (12) // Stocker F.
+00042   STM  10, 00016 (12) // Stocker R.
+00046   LDA  11, 00000 (12) // F := S.
+00050   ADDA 12, 00020      // Augmenter S.
+// [ lab6 : x#1 := 0 ; go to lab5]
+00054   LDA   0, 00000      // R_0 := 0
+00058   STM   0, 00004 (11) // x#1 := R_0
+// [ lab5 : x#1 := 1 ; go to lab4]
+00062   LDA   0, 00001      // R_0 := 1
+00066   STM   0, 00004 (11) // x#1 := R_0
+// [ lab4 : x#1 := 2 ; go to lab3]
+00070   LDA   0, 00002      // R_0 := 2
+00074   STM   0, 00004 (11) // x#1 := R_0
+// [ lab3 : #2 := 4 ; go to lab2]
+00078   LDA   0, 00004      // R_0 := 4
+00082   STM   0, 00008 (11) // #2 := R_0
+// [ lab2 : write(#2) ; go to lab1]
+00086   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65524   LIT  C'OUT:'        // (suite)
+00090   LDM  14, 65524      // (suite)
+00094   HALT  0, 0          // (suite)
+// end of method main : lab1 result#0
+00096   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00100   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00104   LDM  11, 00012 (12) // Restaurer F.
+00108   LDM  10, 00016 (12) // Mettre l'adresse de retour dans R.
+00112   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+

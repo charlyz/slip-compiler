@@ -1,0 +1,28 @@
+//AAAAA COP  ii, aaaaaa(jj)
+// début 16:30 ; fin  17:00
+// But : Calculer la factorielle du nombre contenu à l'adresse 
+//  6000 et placer le résultat à l'adresse 60000.
+// Fragment de programme ; 
+// Pré : Mot[6000] =  a ;
+//       a ! est représentable sur 32 bits en compl. à deux.
+// Post : Mot[60000] = a! ;
+//   les autres mots de la mémoire sont inchangés
+//AAAAA COP  ii, aaaaaa(jj) 
+20000   LDM   1, 6000        // R1 = a 
+20004   LDA   2, 1           // R2 = 1
+//
+// Invariant : a >= R1 >= 0 et R2 = (a! / R1!)
+// ---------   
+// 
+20008   JZ    1, 20022       // si R1 = 0, clôturer.
+20012   MUL   2, 1           // R2 = (a! / (R1 - 1)!)
+20014   SUBA  1, 1           // R2 = (a! / R1!)
+20018   JUMP     20008       // retour au test d'arrêt
+20022   STM   2, 60000       // Mot[60000] = a!
+20026   HALT  0, 0           // arrêt de l'ordinateur
+ 6000   LIT  I(4)            // a = 4
+
+
+
+
+

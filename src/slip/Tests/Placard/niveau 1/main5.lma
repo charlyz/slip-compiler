@@ -1,0 +1,61 @@
+00000   LDA  11, 00000      // Initialisation de F à 0.
+00004   LDA  12, 00172      // Initialisation de S à la plus petite adresse libre.
+00008   LDA  13, 65520      // Initialisation de H à la plus grande adresse libre + 1.
+00012   JUMP 10, 00022      // Saut au début de la méthode statique main(0).
+65532   LIT  C'STOP'        // 
+00016   LDM  14, 65532      // 
+00020   HALT  0, 0          // Arrêt du programme.
+// method main()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00022   LDA   0, 00020 (12) // R_0 contient la nouvelle valeur de S.
+00026   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00028   JLE   0, 00038      // Si elle est inférieure ou égale, c'est OK.
+65528   LIT  C'STOV'        // 
+00032   LDM  14, 65528      // Sinon, afficher STack OVerflow.
+00036   HALT  0, 0          // Arrêter le programme.
+00038   STM  11, 00012 (12) // Stocker F.
+00042   STM  10, 00016 (12) // Stocker R.
+00046   LDA  11, 00000 (12) // F := S.
+00050   ADDA 12, 00020      // Augmenter S.
+// [ lab7 : x#1 := new/3 ; go to lab6]
+// Vérifier s'il existe assez de mémoire libre pour créer un nouvel objet de niveau 3.
+00054   SUBA 13, 00016      //  H := H - (la taille du nouvel objet).
+00058   COMP 12, 13         // Vérifier que S <= H.
+00060   JLE   0, 00070      // Continuer si c'est OK.
+65524   LIT  C'STOV'        // 
+00064   LDM  14, 65524      // Afficher STack OVerflow.
+00068   HALT  0, 0          // Arrêt du programme
+00070   LDA   0, 00003      // Mettre le niveau (3)
+00074   STM   0, 00000 (13) // dans le premier mot de l'objet.
+00078   STM  13, 00004 (11) // Mettre l'adresse de l'objet dans x#1.
+// [ lab6 : x#1.1 := 9 ; go to lab5]
+00082   LDA   0, 00009      // R_0 := 9
+00086   LDM   1, 00004 (11) // R_1 := x#1
+00090   LDA   1, 00004 (1)  // R_1 := adresse(x#1.1).
+00094   STM   0, 00000 (1)  // x#1.1 := R_0
+// [ lab5 : x#1.2 := null ; go to lab4]
+00098   LDA   0, 00000      // Mettre 0 (null) dans R_0.
+00102   LDM   1, 00004 (11) // R_1 := x#1
+00106   LDA   1, 00008 (1)  // R_1 := adresse(x#1.2).
+00110   STM   0, 00000 (1)  // x#1.2 := R_0
+// [ lab4 : x#1.3 := this ; go to lab3]
+00114   LDM   0, 00000 (11) // Mettre la valeur de this dans R_0.
+00118   LDM   1, 00004 (11) // R_1 := x#1
+00122   LDA   1, 00012 (1)  // R_1 := adresse(x#1.3).
+00126   STM   0, 00000 (1)  // x#1.3 := R_0
+// [ lab3 : #2 := x#1.1 ; go to lab2]
+00130   LDM   1, 00004 (11) // R_1 := x#1
+00134   LDM   0, 00004 (1)  // R_0 := x#1.1
+00138   STM   0, 00008 (11) // #2 := R_0
+// [ lab2 : write(#2) ; go to lab1]
+00142   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65520   LIT  C'OUT:'        // (suite)
+00146   LDM  14, 65520      // (suite)
+00150   HALT  0, 0          // (suite)
+// end of method main : lab1 result#0
+00152   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00156   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00160   LDM  11, 00012 (12) // Restaurer F.
+00164   LDM  10, 00016 (12) // Mettre l'adresse de retour dans R.
+00168   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+

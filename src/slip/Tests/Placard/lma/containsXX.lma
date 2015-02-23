@@ -1,0 +1,122 @@
+// But : Sous-programme pour tester si un tableau
+// contient deux occurrences successives
+// d'une même valeur x. 
+// On utilise les conventions standard pour le passage des
+// paramètres : 
+// - R1 contient l'adresse de la zone des paramètres.
+// - Le premier paramètre est l'adresse du tableau.
+// - Un tableau se compose d'une longueur suivie
+//   d'un nombre de mots égal à cette longueur.
+// - Le second paramètre est la valeur à rechercher.
+// - Le résultat est renvoyé dans R0 :
+//      true est représenté par 1,
+//      false est représenté par 0.
+//AAAAA COP  ii, aaaaaa(jj) 
+// Sauver les registres
+1000    STM   2, 1150        // R2 est sauvé en 1150
+1004    STM   3, 1154        // R3 est sauvé en 1154
+1008    STM   4, 1158        // R4 est sauvé en 1158
+1012    STM   5, 1162        // R5 est sauvé en 1162
+1016    LDA   0, 0           // R0 vaut 0 (false)
+1020    LDM   2,      0(1)   // R2 vaut l'adresse du tableau
+1024    LDM   3,      0(2)   // R3 vaut le nombre de mots
+1028    MULA  3, 4           // R3 vaut le nombre d'octets 
+1032    ADD   3, 2           // R3 vaut l'adresse du dernier mot
+1034    LDM   4,      4(1)   // R4 vaut x
+1038    COMP  2, 3           // Tableau vide ?
+1040    JE       1090        // Si oui, aller à la cloture
+1044    ADDA  2, 4           // R2 pointe sur le premier mot
+// Invariant :
+//                  R2   |          R3   |
+// +-----+-- ... --+-----+-- ... --+-----+
+// | v_0 |         | v_i |         | v_n |
+// +-----+-- ... --+-----+-- ... --+-----+
+// \------ non vide -----/
+// 			
+// R0 = 1 si deux éléments consécutifs parmi v_0, ..., v_i 
+//        sont égaux à x,
+//    = 0 sinon.
+// R4 = x
+// Fin de la description de l'invariant.
+1048    JNZ   0, 1090        // Si deux éléments existent, cloturer
+1052    COMP  2, 3           // Tester si R2 = R3
+1054    JE       1090        // Si oui, cloturer
+// Comparer x et v_i
+1058    LDM   5,      0(2)   // R5 = v_i
+1062    COMP  5, 4           // Comparer x et v_i
+1064    JNE      1082        // Si différents, itérer
+// Comparer x et v_{i+1}
+1068    LDM   5,      4(2)   // R5 = v_{i + 1}
+1072    COMP  5, 4           // Comparer x et v_{i + 1}
+1074    JNE      1082        // Si différents, itérer
+1078    LDA   0, 1           // R0 = 1 (true)
+// Itérer
+1082    ADDA  2, 4           // Rétablir l'invariant
+1086    JUMP     1048
+// Cloture
+1090    LDM   2, 1150        // R2 est restauré
+1094    LDM   3, 1154        // R3 est restauré
+1098    LDM   4, 1158        // R4 est restauré
+1102    LDM   5, 1162        // R5 est restauré
+1106    JUMP  0,      0(15)  // Retour àˆ l'appelant
+//                              R2 est sauvéŽ en 1150
+2000    LIT  I(237)          // valeur de x
+// Tableau 1 (vide)
+3000    LIT  I(0)            
+// Tableau 2 (un élément)
+4000    LIT  I(1)             
+4004    LIT  I(237)
+// Tableau 3 (deux éléments)
+5000    LIT  I(2)             
+5004    LIT  I(237)
+5008    LIT  I(237)
+// Tableau 4 (deux éléments)
+6000    LIT  I(2)             
+6004    LIT  I(237)
+6008    LIT  I(-63)
+// Tableau 4 (deux éléments)
+7000    LIT  I(5)             
+7004    LIT  I(237)
+7008    LIT  I(-63)
+7012    LIT  I(0)
+7016    LIT  I(237)
+7020    LIT  I(237)
+//
+// Appels du sous-programme
+20000   LDA   1, 10000
+20004   LDM   2, 2000
+20008   STM   2, 10004
+20012   LDA   2, 3000
+20016   STM   2, 10000
+20020   JUMP 15, 1000
+20024   HALT  0, 0
+//
+20028   LDA   2, 4000
+20032   STM   2, 10000
+20036   JUMP 15, 1000
+20040   HALT  0, 0
+//
+20044   LDA   2, 5000
+20048   STM   2, 10000
+20052   JUMP 15, 1000
+20056   HALT  0, 0
+//
+20060   LDA   2, 6000
+20064   STM   2, 10000
+20068   JUMP 15, 1000
+20072   HALT  0, 0
+//
+20074   LDA   2, 7000
+20078   STM   2, 10000
+20082   JUMP 15, 1000
+20086   HALT  0, 0
+
+
+
+
+
+
+
+
+
+

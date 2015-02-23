@@ -1,0 +1,92 @@
+m1(){ return(1); }
+
+main()
+{
+  read(x); 
+  write(x);
+
+  write(m1());
+  write(m2());
+  write(methodeAvecUnNomTresLong());
+  write(m3());
+  write(m4());
+  write(m5());
+  write(m6(0, 1, 2, 3));
+  write(m7());
+  x = new/15; write(x.m8());
+  write(x.m9());
+}
+
+m2(){ 
+ x = 0;
+ x = - 15;
+ x = 100000;
+ x = x + x ;
+ x = x - 1 ;
+ x = x / x ;
+ x = x * x ;
+ x = x % x ;
+ return(x); 
+}
+
+methodeAvecUnNomTresLong(){ return(1111111111); }
+
+m3(){ 
+ y = 237; x = - 3;
+
+ if (y == x) y = x; 
+ if (y != x) {} else y = x ;
+ if (y > x)  {} else x = 0;
+ if (y >= x) y = 237; else x = 0;
+ if (y < x)  y = 0; 
+ if (y <= x) y = 237; 
+ 
+ return(3); 
+}
+
+
+m4(){ 
+  { x = 0; {} {} { x = 1; { x = 2; {}}}}
+  return(4); 
+}
+
+
+m5(){ 
+
+  x = 2;
+  while (x != 0) x = x - 1;
+
+  while (x == 0) x = x - 1;
+
+  while (x < 0) x = x + 3;
+
+  while (x > 0) x = x - 4;
+
+  while (x <= 0) x = x + 5;
+
+  while (x >= 0) x = x - 6;
+
+  return(5); 
+}
+
+
+m6(a, b, c, d){ return(6); }
+
+m7(){ x = m6(2, null, 3 - 5, 7); return(x + 1); }
+
+m8/0(){ return(8); }
+m8/10(){ return(super.m8()); }
+
+
+m9/0(){ 
+  x = new/3; 
+  x.1 = 9;
+  x.2 = null;
+  x.3 = this; 
+  return(x);
+}
+
+m9/1(){
+  x = super.m9();
+  return(x.1); 
+}

@@ -1,0 +1,79 @@
+00000   LDA  11, 00000      // Initialisation de F à 0.
+00004   LDA  12, 00208      // Initialisation de S à la plus petite adresse libre.
+00008   LDA  13, 65512      // Initialisation de H à la plus grande adresse libre + 1.
+00012   JUMP 10, 00022      // Saut au début de la méthode statique main(0).
+65532   LIT  C'STOP'        // 
+00016   LDM  14, 65532      // 
+00020   HALT  0, 0          // Arrêt du programme.
+// method main()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00022   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+00026   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00028   JLE   0, 00038      // Si elle est inférieure ou égale, c'est OK.
+65528   LIT  C'STOV'        // 
+00032   LDM  14, 65528      // Sinon, afficher STack OVerflow.
+00036   HALT  0, 0          // Arrêter le programme.
+00038   STM  11, 00008 (12) // Stocker F.
+00042   STM  10, 00012 (12) // Stocker R.
+00046   LDA  11, 00000 (12) // F := S.
+00050   ADDA 12, 00016      // Augmenter S.
+// [ lab12 : read(x#1) ; go to lab11]
+65524   LIT  C'IN: '        // 
+00054   LDM  14, 65524      // Afficher "IN: " dans R_14.
+00058   HALT  0, 0          // Attente pour introduction d'une valeur dans R_15.
+00060   STM  15, 00004 (11) // Stocker la valeur lue dans x#1.
+// [ lab11 : write(x#1) ; go to lab10]
+00064   LDM  15, 00004 (11) // Afficher la valeur de x#1.
+65520   LIT  C'OUT:'        // (suite)
+00068   LDM  14, 65520      // (suite)
+00072   HALT  0, 0          // (suite)
+// [ lab10 : x#1 := 0 ; go to lab9]
+00074   LDA   0, 00000      // R_0 := 0
+00078   STM   0, 00004 (11) // x#1 := R_0
+// [ lab9 : x#1 := 0 - 15 ; go to lab8]
+00082   LDA   0, 00000      // R_0 := 0
+00086   LDA   1, 00015      // R_1 := 15
+00090   SUB   0, 1          // R_0 := R_0 - R_1
+00092   STM   0, 00004 (11) // x#1 := R_0
+// [ lab8 : x#1 := 100000 ; go to lab7]
+65516   LIT  I(100000)      // 
+00096   LDM   0, 65516      // R_0 := 100000
+00100   STM   0, 00004 (11) // x#1 := R_0
+// [ lab7 : x#1 := x#1 + x#1 ; go to lab6]
+00104   LDM   0, 00004 (11) // R_0 := x#1
+00108   LDM   1, 00004 (11) // R_1 := x#1
+00112   ADD   0, 1          // R_0 := R_0 + R_1
+00114   STM   0, 00004 (11) // x#1 := R_0
+// [ lab6 : x#1 := x#1 - 1 ; go to lab5]
+00118   LDM   0, 00004 (11) // R_0 := x#1
+00122   LDA   1, 00001      // R_1 := 1
+00126   SUB   0, 1          // R_0 := R_0 - R_1
+00128   STM   0, 00004 (11) // x#1 := R_0
+// [ lab5 : x#1 := x#1 / x#1 ; go to lab4]
+00132   LDM   0, 00004 (11) // R_0 := x#1
+00136   LDM   1, 00004 (11) // R_1 := x#1
+00140   DIV   0, 1          // R_0 := R_0 / R_1
+00142   STM   0, 00004 (11) // x#1 := R_0
+// [ lab4 : x#1 := x#1 * x#1 ; go to lab3]
+00146   LDM   0, 00004 (11) // R_0 := x#1
+00150   LDM   1, 00004 (11) // R_1 := x#1
+00154   MUL   0, 1          // R_0 := R_0 * R_1
+00156   STM   0, 00004 (11) // x#1 := R_0
+// [ lab3 : x#1 := x#1 % x#1 ; go to lab2]
+00160   LDM   0, 00004 (11) // R_0 := x#1
+00164   LDM   1, 00004 (11) // R_1 := x#1
+00168   DIV   0, 1          // R_1 := R_0 % R_1
+00170   LDA   0, 00000 (1)  // R_0 := R_1
+00174   STM   0, 00004 (11) // x#1 := R_0
+// [ lab2 : write(x#1) ; go to lab1]
+00178   LDM  15, 00004 (11) // Afficher la valeur de x#1.
+65512   LIT  C'OUT:'        // (suite)
+00182   LDM  14, 65512      // (suite)
+00186   HALT  0, 0          // (suite)
+// end of method main : lab1 result#0
+00188   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00192   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00196   LDM  11, 00008 (12) // Restaurer F.
+00200   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+00204   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+

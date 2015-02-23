@@ -1,0 +1,42 @@
+// Calcul d'une moyenne en virgule flottante
+// ------------------------------------------
+// Précondition : les mots à considérer sont
+// Mot[1004], Mot[1008], ..., Mot[1016]
+// Postcondition : le résultat sera placé dans R0
+//3456781234123451234561234
+//AAAAA COP  ii, aaaaaa(jj) 
+//
+// Remplir les mots avec les valeurs 1, 2, 3, ..., 100
+1500    LDM   4, 1400
+1504    LDM   5, 1004
+1508    LDA   2, 400
+1512    STM   4,  1000(2)
+1516    SUB   4, 5
+1518    SUBA  2, 4
+1522    JZ    2, 2000
+1526    JUMP     1512
+//
+2000    LDA   1, 0           // R1 = 0 (en virgule flottante)
+2004    LDA   2, 400          // R2 = 400
+2008    JZ    2, 2026        // Invariant vrai ici (2008) :
+// Il existe un naturel i (0 <= i <= 100) tel que
+// R2 = i*4 et R1 = Mot[1000+R2+4] +...+ Mot[1400]
+2012    LDM   3,  1000 (2)   // R3 = Mot[1000+R2]
+2016    ADDF  1, 3           // R1= Mot[1000+R2] +...+ Mot[1400]
+2018    SUBA  2, 4           // R1= Mot[1000+R2+4] +...+ Mot[1400]
+2022    JUMP     2008        // retour au test d'arrêt
+2026    LDA   0, 0     (1)   // R0= Mot[1004] + ... + Mot[1400]
+2030    LDA   1, 34192       // R1= 1000010110010000 (binaire)
+2034    LDA   2, 32768       // R2= 1000000000000000 (binaire)
+2038    MUL   1, 2 
+// R1= 01000010110010000000000000000000 (en binaire)
+//   = 100 (en virgule flottante)   
+2040    DIVF  0, 1           // R0 contient la moyenne !
+2042    HALT  0, 0
+1004    LIT  F(1.0)
+1400    LIT  F(100)
+
+
+
+
+

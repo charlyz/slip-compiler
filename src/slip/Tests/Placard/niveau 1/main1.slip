@@ -1,0 +1,15 @@
+main()
+{
+  read(x); 
+  write(x);
+  x = 0;
+  x = - 15;
+  x = 100000;
+  x = x + x ;
+  x = x - 1 ;
+  x = x / x ;
+  x = x * x ;
+  x = x % x ;
+  write(x); 
+}
+

@@ -1,0 +1,59 @@
+{meth emptyTree} return new 0; end
+
+{meth inTree->0 x} return 0; end
+
+{meth inTree->3 x}
+ 	
+	if x == this.3 then 
+		return (1); 
+	end
+  	if x < this.3 then 
+		y = this.1; 
+		else y = this.2;
+	end 
+  	return /y.{inTree x}; 
+end
+  
+{meth addToTree->0 x}
+ 
+  y = new 3;
+  y.1 = this;
+  y.2 = this;
+  y.3 = x;
+  return y;
+end
+
+{meth addToTree->3 x}
+ 
+  if x < this.3 then
+      y = this.1; 
+	this.1 = /y.{addToTree x}; 
+  elseif this.3 < x then
+      y = this.2; 
+      this.2 = /y.{addToTree x}; 
+  end
+  return this; 
+end
+
+{meth writeTree->0} end
+
+{meth writeTree->3}
+
+  x = this.1;
+  x = /x.{writeTree};
+  write this.3;
+  x = this.2;
+  x = /x.{writeTree};
+end
+
+{meth main}
+
+  x = /{emptyTree};
+  x = /x.{addToTree 6};
+  x = /x.{addToTree 4};
+  x = /x.{addToTree 5};
+  x = /x.{addToTree 3};
+  x = /x.{addToTree 7};
+  x = /x.{addToTree 5};
+  x = /x.{writeTree};
+end

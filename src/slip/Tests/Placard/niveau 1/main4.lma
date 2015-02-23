@@ -1,0 +1,104 @@
+00000   LDA  11, 00000      // Initialisation de F à 0.
+00004   LDA  12, 00282      // Initialisation de S à la plus petite adresse libre.
+00008   LDA  13, 65528      // Initialisation de H à la plus grande adresse libre + 1.
+00012   JUMP 10, 00022      // Saut au début de la méthode statique main(0).
+65532   LIT  C'STOP'        // 
+00016   LDM  14, 65532      // 
+00020   HALT  0, 0          // Arrêt du programme.
+// method main()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00022   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+00026   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00028   JLE   0, 00038      // Si elle est inférieure ou égale, c'est OK.
+65528   LIT  C'STOV'        // 
+00032   LDM  14, 65528      // Sinon, afficher STack OVerflow.
+00036   HALT  0, 0          // Arrêter le programme.
+00038   STM  11, 00008 (12) // Stocker F.
+00042   STM  10, 00012 (12) // Stocker R.
+00046   LDA  11, 00000 (12) // F := S.
+00050   ADDA 12, 00016      // Augmenter S.
+// [ lab21 : x#1 := 2 ; go to lab19]
+00054   LDA   0, 00002      // R_0 := 2
+00058   STM   0, 00004 (11) // x#1 := R_0
+// [ lab19 : if x#1 == 0 then go to lab16 else go to lab18]
+00062   LDM   0, 00004 (11) // R_0 := x#1
+00066   LDA   1, 00000      // R_1 := 0
+00070   COMP  0, 1          // 
+00072   JNE   0, 00264      // Si R_0 != R_1 aller à lab18
+// [ lab16 : if x#1 == 0 then go to lab15 else go to lab13]
+00076   LDM   0, 00004 (11) // R_0 := x#1
+00080   LDA   1, 00000      // R_1 := 0
+00084   COMP  0, 1          // 
+00086   JNE   0, 00108      // Si R_0 != R_1 aller à lab13
+// [ lab15 : skip ; go to lab17]
+// [ lab17 : x#1 := x#1 - 1 ; go to lab16]
+00090   LDM   0, 00004 (11) // R_0 := x#1
+00094   LDA   1, 00001      // R_1 := 1
+00098   SUB   0, 1          // R_0 := R_0 - R_1
+00100   STM   0, 00004 (11) // x#1 := R_0
+00104   JUMP  0, 00076      // Aller à lab16.
+// [ lab13 : if x#1 < 0 then go to lab12 else go to lab10]
+00108   LDM   0, 00004 (11) // R_0 := x#1
+00112   LDA   1, 00000      // R_1 := 0
+00116   COMP  0, 1          // 
+00118   JGE   0, 00140      // Si R_0 >= R_1 aller à lab10
+// [ lab12 : skip ; go to lab14]
+// [ lab14 : x#1 := x#1 + 3 ; go to lab13]
+00122   LDM   0, 00004 (11) // R_0 := x#1
+00126   LDA   1, 00003      // R_1 := 3
+00130   ADD   0, 1          // R_0 := R_0 + R_1
+00132   STM   0, 00004 (11) // x#1 := R_0
+00136   JUMP  0, 00108      // Aller à lab13.
+// [ lab10 : if 0 < x#1 then go to lab9 else go to lab7]
+00140   LDA   0, 00000      // R_0 := 0
+00144   LDM   1, 00004 (11) // R_1 := x#1
+00148   COMP  0, 1          // 
+00150   JGE   0, 00172      // Si R_0 >= R_1 aller à lab7
+// [ lab9 : skip ; go to lab11]
+// [ lab11 : x#1 := x#1 - 4 ; go to lab10]
+00154   LDM   0, 00004 (11) // R_0 := x#1
+00158   LDA   1, 00004      // R_1 := 4
+00162   SUB   0, 1          // R_0 := R_0 - R_1
+00164   STM   0, 00004 (11) // x#1 := R_0
+00168   JUMP  0, 00140      // Aller à lab10.
+// [ lab7 : if 0 < x#1 then go to lab4 else go to lab6]
+00172   LDA   0, 00000      // R_0 := 0
+00176   LDM   1, 00004 (11) // R_1 := x#1
+00180   COMP  0, 1          // 
+00182   JGE   0, 00246      // Si R_0 >= R_1 aller à lab6
+// [ lab4 : if x#1 < 0 then go to lab2 else go to lab3]
+00186   LDM   0, 00004 (11) // R_0 := x#1
+00190   LDA   1, 00000      // R_1 := 0
+00194   COMP  0, 1          // 
+00196   JGE   0, 00228      // Si R_0 >= R_1 aller à lab3
+// [ lab2 : result#0 := 5 ; go to lab1]
+00200   LDA   0, 00005      // R_0 := 5
+00204   STM   0, 00000 (11) // result#0 := R_0
+// end of method main : lab1 result#0
+00208   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00212   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00216   LDM  11, 00008 (12) // Restaurer F.
+00220   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+00224   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// [ lab3 : skip ; go to lab5]
+// [ lab5 : x#1 := x#1 - 6 ; go to lab4]
+00228   LDM   0, 00004 (11) // R_0 := x#1
+00232   LDA   1, 00006      // R_1 := 6
+00236   SUB   0, 1          // R_0 := R_0 - R_1
+00238   STM   0, 00004 (11) // x#1 := R_0
+00242   JUMP  0, 00186      // Aller à lab4.
+// [ lab6 : skip ; go to lab8]
+// [ lab8 : x#1 := x#1 + 5 ; go to lab7]
+00246   LDM   0, 00004 (11) // R_0 := x#1
+00250   LDA   1, 00005      // R_1 := 5
+00254   ADD   0, 1          // R_0 := R_0 + R_1
+00256   STM   0, 00004 (11) // x#1 := R_0
+00260   JUMP  0, 00172      // Aller à lab7.
+// [ lab18 : skip ; go to lab20]
+// [ lab20 : x#1 := x#1 - 1 ; go to lab19]
+00264   LDM   0, 00004 (11) // R_0 := x#1
+00268   LDA   1, 00001      // R_1 := 1
+00272   SUB   0, 1          // R_0 := R_0 - R_1
+00274   STM   0, 00004 (11) // x#1 := R_0
+00278   JUMP  0, 00062      // Aller à lab19.
+

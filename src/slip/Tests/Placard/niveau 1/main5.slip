@@ -1,0 +1,7 @@
+main(){ 
+  x = new/3; 
+  x.1 = 9;
+  x.2 = null;
+  x.3 = this; 
+  write(x.1); 
+}

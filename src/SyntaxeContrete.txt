@@ -1,0 +1,68 @@
+//
+// Programme et méthodes
+//
+<PROGRAM> 							::= 	<METHOD> |
+											<METHOD> <PROGRAM>
+<METHOD> 							::= 	'{' 'meth' <NAME> <PARAMETERS_LIST> '}' <STATEMENT> 'end'
+<STATEMENT> 						::= 	'lambda' |
+											<STMT> <STATEMENT>
+<NAME> 								::= 	'identifier' |
+											'identifier' '->' 'constant'
+<PARAMETERS_LIST> 					::= 	'lambda' | 
+											<NON_EMPTY_PARAMETERS_LIST>
+<NON_EMPTY_PARAMETERS_LIST> 		::= 	'identifier' |
+											',' 'identifier'
+
+//
+// Instructions
+//
+
+<STMT> 						::= 	<IF> | <LOOP> | <COMMAND> | <RETURN>		
+<COMMAND> 					::= 	<INPUT> | <OUTPUT> | <ASSIGNEMENT> | <CALL>
+<CALL> 						::= 	'/' <TARGET> '{' <CALL_METHOD_NAME> <DES_PARAMETERS_LIST> '}'
+<DES_PARAMETERS_LIST>		::= 	'lambda' | 
+									<NON_EMPTY_DES_PARAMETERS_LIST>
+<NON_EMPTY_DES_PARAMETERS_LIST> ::= <RIGHT_EXPRESSION> | 
+									',' <RIGHT_EXPRESSION> <NON_EMPTY_DES_PARAMETERS_LIST>
+<TARGET> ::= 'identifier' '.' | 'super' '.' | 'this' '.' | 'lambda'
+<CALL_METHOD_NAME> 			::= 	'identifier'
+<ASSIGNEMENT> 				::= 	<LEFT_EXPRESSION> '=' <RIGHT_EXPRESSION> ';'
+<IF> 						::= 	'if' <CONDITION> 'then' <STATEMENT> <ELSEIF> 'end' |
+									'if' <CONDITION> 'then' <STATEMENT> <ELSEIF> 'else' <STATEMENT> 'end'
+<ELSEIF>					::=		'lambda' | 
+									'elseif' <CONDITION> <ELSEIF>
+<LOOP> 						::= 	'while' <CONDITION> 'do' <STATEMENT> 'end'
+<INPUT> 					::= 	'read' <LEFT_EXPRESSION> ';'
+<OUTPUT> 					::= 	'write' <RIGHT_EXPRESSION> ';'
+<RETURN> 					::= 	'return' <EXPRESSION> ';'
+
+//
+// Condition
+//
+
+<CONDITION> 		::= 	<LVL1_COMPARE>
+<LVL1_COMPARE> 		::= 	<LVL2_COMPARE> | 
+							<LVL2_COMPARE> 'or' <LVL1_COMPARE>				
+<LVL2_COMPARE> 		::= 	<LVL3_COMPARE> |
+							<LVL3_COMPARE> '&' <LVL2_COMPARE>				
+<LVL3_COMPARE> 		::= 	<RIGHT_EXPRESSION> <COMPARATOR> <RIGHT_EXPRESSION> | '!' '(' <CONDITION> ')'
+<COMPARATOR> 		::= 	'==' | '<' | '>' | '!=' | '<=' | '>='
+
+//
+// Expressions
+//
+
+<LEFT_EXPRESSION> 	::= 	'this' <LEFT_C> | 'identifier' <LEFT_C>
+<LEFT_C> 			::= 	'lambda' | '.' 'constant'
+<RIGHT_EXPRESSION> 	::= 	<EXPRESSION> 
+<EXPRESSION> 		::= 	<TERM> | 
+							<TERM> <HIGH_OPERATOR> <TERM> <EXPRESSION_L>
+<EXPRESSION_L>		::= 	'lambda' |
+							<EXPRESSION>
+<HIGH_OPERATOR> 	::= 	'+' | '-'
+<TERM> 				::= 	<FACTOR> |
+							<FACTOR> <BASIC_OPERATOR> <FACTOR> <TERM_L>
+<TERM_L>			::=		'lambda' |
+							<TERM>	
+<BASIC_OPERATOR> 	::= 	'*' | '/' | '%'
+<FACTOR> 			::=  <CALL> | 'constant' | '(' <EXPRESSION> ')' | 'new' 'constant' | 'null' | <LEFT_EXPRESSION>

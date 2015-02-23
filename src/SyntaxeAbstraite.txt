@@ -1,0 +1,28 @@
+stmt ::= l cmd l | l if cond then l else l  end
+cmd ::= ass | call | in | out
+cond ::= sexr cop sexpr
+ass ::= des = expr | x = new/i
+
+// {} ne signifient pas "ensemble"
+call ::= x = {m x,..,x} | x = {x.m x,..,x} | x = {super.m x,..,x}
+
+// {} ne signifient pas "ensemble"
+in ::= {read x}
+
+// {} ne signifient pas "ensemble"
+out ::= {write x}
+cop ::= = | <
+des ::= x | x.i | this.i
+aop ::= + | - | * | / | %
+
+// {} ne signifient pas "ensemble" sauf pour {stmt}
+decl ::= {meth name x,..,x} l {stmt} l end x
+name ::= m | m.i
+
+prog ::= {decl}
+
+expr ::= sexpr | cexpr
+sexpr ::= i | this | null | des
+cexpr ::= sexpr aop sexpr
+
+ 

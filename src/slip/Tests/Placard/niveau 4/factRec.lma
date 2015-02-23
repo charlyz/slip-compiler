@@ -1,0 +1,145 @@
+//AAAAA COP  ii, aaaaaa(jj)//
+00000   LDA  11, 00000
+00004   LDA  12, 00340
+00008   LDA  13, 65492
+00012   JUMP 10, 00034
+65532   LIT  C'STOP'
+00016   LDM  14, 65532
+00020   HALT  0, 0 
+00022   JUMP  0, 00020
+//Table de la méthode: main
+00026   LIT  I(34)
+//Table de la méthode: fact
+00030   LIT  I(170)
+//Translation of Method main
+00034   LDA   0, 00020 (12)
+00038   COMP  0, 13
+00040   JL    0, 00054
+65528   LIT  C'ERR:'
+00044   LDM  14, 65528
+65524   LIT  C'STOV'
+00048   LDM  15, 65524
+00052   HALT  0, 0 
+//On sauve F
+00054   STM  11, 00016 (12)
+//On sauve R
+00058   STM  10, 00020 (12)
+//F := S
+00062   LDA  11, 00000 (12)
+//new S
+00066   LDA  12, 00024 (12)
+//[ lab5 : read(x#1) ; go to lab4]
+65520   LIT  C'IN: '
+00070   LDM  14, 65520
+00074   HALT  0, 0 
+00076   STM  15, 00004 (11)
+//[ lab4 : #3 := x#1 ; go to lab3]
+00080   LDM   0, 00004 (11)
+00084   LDA   1, 00012 (11)
+//#3 := x#1
+00088   STM   0, 00000 (1)
+//[ lab3 : #2 := fact(#3) ; go to lab2]
+//Test pour le passage de 1 paramètres et this, R, F
+00092   LDA   0, 00016 (12)
+00096   COMP  0, 13
+00098   JL    0, 00112 (0)
+00102   LDM  14, 65528
+00106   LDM  15, 65524
+00110   HALT  0, 0 
+//Passage des paramètres
+00112   LDM   0, 00012 (11)
+00116   STM   0, 00004 (12)
+//Passage de this
+00120   LDM   1, 00000 (11)
+00124   STM   1, 00000 (12)
+00128   LDM   9, 00030
+00132   JUMP 10, 00000 (9)
+//Sauve la valeur retournée par l'appel
+00136   STM   0, 00008 (11)
+//[ lab2 : write(#2) ; go to lab1]
+//write(#2)
+00140   LDM  15, 00008 (11)
+65508   LIT  C'OUT:'
+00144   LDM  14, 65508
+00148   HALT  0, 0 
+00150   LDM   0, 00000 (11)
+//On restaure le S
+00154   LDA  12, 00000 (11)
+//On restaure le F
+00158   LDM  11, 00016 (12)
+//On restaure le R
+00162   LDM  10, 00020 (12)
+00166   JUMP  0, 00000 (10)
+//end of method main : lab1 result#0
+//Translation of Method fact
+00170   LDA   0, 00020 (12)
+00174   COMP  0, 13
+00176   JL    0, 00190
+00180   LDM  14, 65528
+00184   LDM  15, 65524
+00188   HALT  0, 0 
+//On sauve F
+00190   STM  11, 00020 (12)
+//On sauve R
+00194   STM  10, 00024 (12)
+//F := S
+00198   LDA  11, 00000 (12)
+//new S
+00202   LDA  12, 00028 (12)
+//[ lab11 : if x#1 == 0 then go to lab10 else go to lab9]
+//x#1 == 0
+00206   LDM   0, 00004 (11)
+00210   LDA   1, 00000
+00214   COMP  0, 1 
+00216   JE    0, 00308
+//[ lab9 : #3 := x#1 - 1 ; go to lab8]
+//x#1 - 1
+00220   LDM   0, 00004 (11)
+00224   LDA   1, 00001
+00228   SUB   0, 1 
+00230   LDA   1, 00012 (11)
+//#3 := x#1 - 1
+00234   STM   0, 00000 (1)
+//[ lab8 : #3 := fact(#3) ; go to lab7]
+//Test pour le passage de 1 paramètres et this, R, F
+00238   LDA   0, 00016 (12)
+00242   COMP  0, 13
+00244   JL    0, 00258 (0)
+00248   LDM  14, 65528
+00252   LDM  15, 65524
+00256   HALT  0, 0 
+//Passage des paramètres
+00258   LDM   0, 00012 (11)
+00262   STM   0, 00004 (12)
+//Passage de this
+00266   LDM   1, 00000 (11)
+00270   STM   1, 00000 (12)
+00274   LDM   9, 00030
+00278   JUMP 10, 00000 (9)
+//Sauve la valeur retournée par l'appel
+00282   STM   0, 00012 (11)
+//[ lab7 : result#0 := x#1 * #3 ; go to lab6]
+//x#1 * #3
+00286   LDM   0, 00004 (11)
+00290   LDM   1, 00012 (11)
+00294   MUL   0, 1 
+00296   LDA   1, 00000 (11)
+//result#0 := x#1 * #3
+00300   STM   0, 00000 (1)
+00304   JUMP  0, 00320
+//[ lab10 : result#0 := 1 ; go to lab6]
+00308   LDA   0, 00001
+00312   LDA   1, 00000 (11)
+//result#0 := 1
+00316   STM   0, 00000 (1)
+00320   LDM   0, 00000 (11)
+//On restaure le S
+00324   LDA  12, 00000 (11)
+//On restaure le F
+00328   LDM  11, 00020 (12)
+//On restaure le R
+00332   LDM  10, 00024 (12)
+00336   JUMP  0, 00000 (10)
+//end of method fact : lab6 result#0
+
+

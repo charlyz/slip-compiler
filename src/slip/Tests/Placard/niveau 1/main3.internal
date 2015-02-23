@@ -1,0 +1,1 @@
+method main(){ lab6  [ lab6 : x#1 := 0 ; go to lab5]  [ lab5 : x#1 := 1 ; go to lab4]  [ lab4 : x#1 := 2 ; go to lab3]  [ lab3 : #2 := 4 ; go to lab2]  [ lab2 : write(#2) ; go to lab1]} lab1 result#0end of method main.

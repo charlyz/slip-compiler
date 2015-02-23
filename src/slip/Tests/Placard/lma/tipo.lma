@@ -1,0 +1,14 @@
+//AAAAA COP  ii, aaaaaa(jj)
+2000    LDM  12, 1004  (0) 
+2004    LDM   3, 1008  (0)  
+2008    LDA  10, 10           
+2012    DIVA 12, 10
+2016    DIVA  3, 10 
+2020    LDC   5, 1012
+2024    STC   5, 2004      
+2028    HALT  0, 0 
+//...
+1004    LIT  I(24)  
+1008    LIT  I(34) 
+1012    LIT  C'TIPO' 
+

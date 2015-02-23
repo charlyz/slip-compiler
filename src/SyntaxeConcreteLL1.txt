@@ -1,0 +1,74 @@
+//
+// Balises prédéfinies, elles sont déjà chargées
+// par le parser.
+//
+// 'lambda'		::=		Symbole vide
+// 'identifier' ::= 	Une chaine de caractères
+// 'constant' 	::= 	Un nombre
+// <PROGRAM>	::=		Premier symbole
+
+//
+// Programme et méthodes
+//
+
+<PROGRAM> 							::= 	<METHOD> <PROGRAM_LL1>
+<PROGRAM_LL1> 						::= 	'lambda' | <METHOD> <PROGRAM_LL1>
+<METHOD> 							::= 	'{' 'meth' <NAME> <PARAMETERS_LIST> '}' <STATEMENT> <RETURN> 'end'
+<STATEMENT> 						::= 	'lambda' | <STMT> <STATEMENT_LL1>
+<STATEMENT_LL1> 					::= 	'lambda' | <STMT> <STATEMENT_LL1>
+<NAME> 								::= 	'identifier' <NAME_LL1>
+<NAME_LL1> 							::= 	'lambda' | '->' 'constant'
+<PARAMETERS_LIST> 					::= 	'lambda' | <NON_EMPTY_PARAMETERS_LIST>
+<NON_EMPTY_PARAMETERS_LIST> 		::= 	'identifier' <NON_EMPTY_PARAMETERS_LIST_LL1>
+<NON_EMPTY_PARAMETERS_LIST_LL1> 	::= 	'lambda' | 'identifier' <NON_EMPTY_PARAMETERS_LIST>
+
+//
+// Instructions
+//
+
+<STMT> 						::= 	<IF> | <LOOP> | <COMMAND>			
+<COMMAND> 					::= 	<INPUT> | <OUTPUT> | <ASSIGNEMENT>
+<CALL> 						::= 	'{' <CALL_METHOD_NAME> <DES_PARAMETERS_LIST> '}'
+<DES_PARAMETERS_LIST>		::= 	'lambda' | <NON_EMPTY_DES_PARAMETERS>
+<NON_EMPTY_DES_PARAMETERS> 	::= 	<LEFT_EXPRESSION> | <NON_EMPTY_DES_PARAMETERS> <LEFT_EXPRESSION>
+<CALL_METHOD_NAME> 			::= 	'identifier' | <LEFT_EXPRESSION> '.' 'identifier' | 'super' '.' 'identifier'
+<ASSIGNEMENT> 				::= 	<LEFT_EXPRESSION> '=' <RIGHT_EXPRESSION>
+<IF> 						::= 	'if' <CONDITION> 'then' <STMT> <IF_LL1>
+<IF_LL1> 					::= 	'end' | 'else' <STMT> 'end'
+<LOOP> 						::= 	'while' <CONDITION> 'do' <STMT> 'end'
+<INPUT> 					::= 	'{' 'read' <LEFT_EXPRESSION> '}'
+<OUTPUT> 					::= 	'{' 'write' <RIGHT_EXPRESSION> '}'
+<RETURN> 					::= 	<LEFT_EXPRESSION>
+
+
+
+//
+// Condition
+//
+
+<CONDITION> 		::= 	<LVL1_COMPARE>
+<LVL1_COMPARE> 		::= 	<LVL2_COMPARE> <LVL1_COMPARE_LL1>
+<LVL1_COMPARE_LL1> 	::=  	'lambda' | 'or' <LVL2_COMPARE> <LVL1_COMPARE_LL1>					
+<LVL2_COMPARE> 		::= 	<LVL3_COMPARE> <LVL2_COMPARE_LL1>
+<LVL2_COMPARE_LL1> 	::= 	'lambda' | '&' <LVL3_COMPARE> <LVL2_COMPARE_LL1>					
+<LVL3_COMPARE> 		::= 	<RIGHT_EXPRESSION> <COMPARATOR> <RIGHT_EXPRESSION> | '!' '(' <CONDITION> ')'
+<COMPARATOR> 		::= 	'==' | '<' | '>' | '!=' | '<=' | '>='
+
+
+
+//
+// Expressions
+//
+
+<LEFT_EXPRESSION> 	::= 	'this' '.' 'constant' | 'identifier' <LEFT_LL1>
+<LEFT_LL1> 			::= 	'lambda' | '.' 'constant'
+<RIGHT_EXPRESSION> 	::= 	<EXPRESSION> | '{' 'new' 'constant' '}' | 'null' | 'this' | <CALL>
+<EXPRESSION> 		::= 	<TERM> <EXPRESSION_LL1>
+<EXPRESSION_LL1> 	::= 	'lambda' | <HIGH_OPERATOR> <TERM> <EXPRESSION_LL1>
+<HIGH_OPERATOR> 	::= 	'+' | '-'
+<TERM> 				::= 	<FACTOR> <TERM_LL1>
+<TERM_LL1> 			::= 	'lambda' | <BASIC_OPERATOR> <FACTOR> <TERM_LL1>	
+<BASIC_OPERATOR> 	::= 	'*' | '/' | '%'
+<FACTOR> 			::= 	<LEFT_EXPRESSION> | <CALL> | 'constant' | '(' <EXPRESSION> ')' | 'this' | 'null' | 'new' '->' 'constant'
+
+

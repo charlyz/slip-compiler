@@ -1,0 +1,1 @@
+method main(){ lab6  [ lab6 : y#1 := 237 ; go to lab5]  [ lab5 : x#2 := 400 ; go to lab4]  [ lab4 : if x#2 < y#1 then go to lab2 else go to lab3]  [ lab2 : write(y#1) ; go to lab1]  [ lab3 : y#1 := 236 ; go to lab2]} lab1 result#0end of method main.

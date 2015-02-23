@@ -1,0 +1,769 @@
+00000   LDA  11, 00000      // Initialisation de F à 0.
+00004   LDA  12, 02112      // Initialisation de S à la plus petite adresse libre.
+00008   LDA  13, 65364      // Initialisation de H à la plus grande adresse libre + 1.
+00012   JUMP 10, 00134      // Saut au début de la méthode statique main(0).
+65532   LIT  C'STOP'        // 
+00016   LDM  14, 65532      // 
+00020   HALT  0, 0          // Arrêt du programme.
+// method m1()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00074   LDA   0, 00012 (12) // R_0 contient la nouvelle valeur de S.
+00078   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00080   JLE   0, 00090      // Si elle est inférieure ou égale, c'est OK.
+65528   LIT  C'STOV'        // 
+00084   LDM  14, 65528      // Sinon, afficher STack OVerflow.
+00088   HALT  0, 0          // Arrêter le programme.
+00090   STM  11, 00004 (12) // Stocker F.
+00094   STM  10, 00008 (12) // Stocker R.
+00098   LDA  11, 00000 (12) // F := S.
+00102   ADDA 12, 00012      // Augmenter S.
+// [ lab2 : result#0 := 1 ; go to lab1]
+00106   LDA   0, 00001      // R_0 := 1
+00110   STM   0, 00000 (11) // result#0 := R_0
+// end of method m1 : lab1 result#0
+00114   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00118   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00122   LDM  11, 00004 (12) // Restaurer F.
+00126   LDM  10, 00008 (12) // Mettre l'adresse de retour dans R.
+00130   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method main()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00134   LDA   0, 00036 (12) // R_0 contient la nouvelle valeur de S.
+00138   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00140   JLE   0, 00150      // Si elle est inférieure ou égale, c'est OK.
+65524   LIT  C'STOV'        // 
+00144   LDM  14, 65524      // Sinon, afficher STack OVerflow.
+00148   HALT  0, 0          // Arrêter le programme.
+00150   STM  11, 00028 (12) // Stocker F.
+00154   STM  10, 00032 (12) // Stocker R.
+00158   LDA  11, 00000 (12) // F := S.
+00162   ADDA 12, 00036      // Augmenter S.
+// [ lab30 : read(x#1) ; go to lab29]
+65520   LIT  C'IN: '        // 
+00166   LDM  14, 65520      // Afficher "IN: " dans R_14.
+00170   HALT  0, 0          // Attente pour introduction d'une valeur dans R_15.
+00172   STM  15, 00004 (11) // Stocker la valeur lue dans x#1.
+// [ lab29 : write(x#1) ; go to lab28]
+00176   LDM  15, 00004 (11) // Afficher la valeur de x#1.
+65516   LIT  C'OUT:'        // (suite)
+00180   LDM  14, 65516      // (suite)
+00184   HALT  0, 0          // (suite)
+// [ lab28 : #2 := m1() ; go to lab27]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00186   LDA   0, 00004 (12) // (suite)
+00190   COMP  0, 13         // (suite)
+00192   JLE   0, 00202      // (suite)
+65512   LIT  C'STOV'        // 
+00196   LDM  14, 65512      // (suite)
+00200   HALT  0, 0          // (suite)
+00202   JUMP 10, 00074      // Saut au début de la méthode statique m1(0).
+00206   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab27 : write(#2) ; go to lab26]
+00210   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65508   LIT  C'OUT:'        // (suite)
+00214   LDM  14, 65508      // (suite)
+00218   HALT  0, 0          // (suite)
+// [ lab26 : #2 := m2() ; go to lab25]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00220   LDA   0, 00004 (12) // (suite)
+00224   COMP  0, 13         // (suite)
+00226   JLE   0, 00236      // (suite)
+65504   LIT  C'STOV'        // 
+00230   LDM  14, 65504      // (suite)
+00234   HALT  0, 0          // (suite)
+00236   JUMP 10, 00714      // Saut au début de la méthode statique m2(0).
+00240   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab25 : write(#2) ; go to lab24]
+00244   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65500   LIT  C'OUT:'        // (suite)
+00248   LDM  14, 65500      // (suite)
+00252   HALT  0, 0          // (suite)
+// [ lab24 : #2 := methodeAvecUnNomTresLong() ; go to lab23]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00254   LDA   0, 00004 (12) // (suite)
+00258   COMP  0, 13         // (suite)
+00260   JLE   0, 00270      // (suite)
+65496   LIT  C'STOV'        // 
+00264   LDM  14, 65496      // (suite)
+00268   HALT  0, 0          // (suite)
+00270   JUMP 10, 00878      // Saut au début de la méthode statique methodeAvecUnNomTresLong(0).
+00274   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab23 : write(#2) ; go to lab22]
+00278   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65492   LIT  C'OUT:'        // (suite)
+00282   LDM  14, 65492      // (suite)
+00286   HALT  0, 0          // (suite)
+// [ lab22 : #2 := m3() ; go to lab21]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00288   LDA   0, 00004 (12) // (suite)
+00292   COMP  0, 13         // (suite)
+00294   JLE   0, 00304      // (suite)
+65488   LIT  C'STOV'        // 
+00298   LDM  14, 65488      // (suite)
+00302   HALT  0, 0          // (suite)
+00304   JUMP 10, 00938      // Saut au début de la méthode statique m3(0).
+00308   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab21 : write(#2) ; go to lab20]
+00312   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65484   LIT  C'OUT:'        // (suite)
+00316   LDM  14, 65484      // (suite)
+00320   HALT  0, 0          // (suite)
+// [ lab20 : #2 := m4() ; go to lab19]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00322   LDA   0, 00004 (12) // (suite)
+00326   COMP  0, 13         // (suite)
+00328   JLE   0, 00338      // (suite)
+65480   LIT  C'STOV'        // 
+00332   LDM  14, 65480      // (suite)
+00336   HALT  0, 0          // (suite)
+00338   JUMP 10, 01172      // Saut au début de la méthode statique m4(0).
+00342   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab19 : write(#2) ; go to lab18]
+00346   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65476   LIT  C'OUT:'        // (suite)
+00350   LDM  14, 65476      // (suite)
+00354   HALT  0, 0          // (suite)
+// [ lab18 : #2 := m5() ; go to lab17]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00356   LDA   0, 00004 (12) // (suite)
+00360   COMP  0, 13         // (suite)
+00362   JLE   0, 00372      // (suite)
+65472   LIT  C'STOV'        // 
+00366   LDM  14, 65472      // (suite)
+00370   HALT  0, 0          // (suite)
+00372   JUMP 10, 01256      // Saut au début de la méthode statique m5(0).
+00376   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab17 : write(#2) ; go to lab16]
+00380   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65468   LIT  C'OUT:'        // (suite)
+00384   LDM  14, 65468      // (suite)
+00388   HALT  0, 0          // (suite)
+// [ lab16 : #3 := 0 ; go to lab15]
+00390   LDA   0, 00000      // R_0 := 0
+00394   STM   0, 00012 (11) // #3 := R_0
+// [ lab15 : #4 := 1 ; go to lab14]
+00398   LDA   0, 00001      // R_0 := 1
+00402   STM   0, 00016 (11) // #4 := R_0
+// [ lab14 : #5 := 2 ; go to lab13]
+00406   LDA   0, 00002      // R_0 := 2
+00410   STM   0, 00020 (11) // #5 := R_0
+// [ lab13 : #6 := 3 ; go to lab12]
+00414   LDA   0, 00003      // R_0 := 3
+00418   STM   0, 00024 (11) // #6 := R_0
+// [ lab12 : #2 := m6(#3, #4, #5, #6) ; go to lab11]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00422   LDA   0, 00020 (12) // (suite)
+00426   COMP  0, 13         // (suite)
+00428   JLE   0, 00438      // (suite)
+65464   LIT  C'STOV'        // 
+00432   LDM  14, 65464      // (suite)
+00436   HALT  0, 0          // (suite)
+00438   LDM   0, 00012 (11) // Affecter le paramètre effectif #3
+00442   STM   0, 00004 (12) // au 1-ème paramètre formel.
+00446   LDM   0, 00016 (11) // Affecter le paramètre effectif #4
+00450   STM   0, 00008 (12) // au 2-ème paramètre formel.
+00454   LDM   0, 00020 (11) // Affecter le paramètre effectif #5
+00458   STM   0, 00012 (12) // au 3-ème paramètre formel.
+00462   LDM   0, 00024 (11) // Affecter le paramètre effectif #6
+00466   STM   0, 00016 (12) // au 4-ème paramètre formel.
+00470   JUMP 10, 01516      // Saut au début de la méthode statique m6(4).
+00474   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab11 : write(#2) ; go to lab10]
+00478   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65460   LIT  C'OUT:'        // (suite)
+00482   LDM  14, 65460      // (suite)
+00486   HALT  0, 0          // (suite)
+// [ lab10 : #2 := m7() ; go to lab9]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00488   LDA   0, 00004 (12) // (suite)
+00492   COMP  0, 13         // (suite)
+00494   JLE   0, 00504      // (suite)
+65456   LIT  C'STOV'        // 
+00498   LDM  14, 65456      // (suite)
+00502   HALT  0, 0          // (suite)
+00504   JUMP 10, 01576      // Saut au début de la méthode statique m7(0).
+00508   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab9 : write(#2) ; go to lab8]
+00512   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65452   LIT  C'OUT:'        // (suite)
+00516   LDM  14, 65452      // (suite)
+00520   HALT  0, 0          // (suite)
+// [ lab8 : x#1 := new/15 ; go to lab7]
+// Vérifier s'il existe assez de mémoire libre pour créer un nouvel objet de niveau 15.
+00522   SUBA 13, 00064      //  H := H - (la taille du nouvel objet).
+00526   COMP 12, 13         // Vérifier que S <= H.
+00528   JLE   0, 00538      // Continuer si c'est OK.
+65448   LIT  C'STOV'        // 
+00532   LDM  14, 65448      // Afficher STack OVerflow.
+00536   HALT  0, 0          // Arrêt du programme
+00538   LDA   0, 00015      // Mettre le niveau (15)
+00542   STM   0, 00000 (13) // dans le premier mot de l'objet.
+00546   STM  13, 00004 (11) // Mettre l'adresse de l'objet dans x#1.
+// [ lab7 : #2 := x#1.m8() ; go to lab6]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00550   LDA   0, 00004 (12) // (suite)
+00554   COMP  0, 13         // (suite)
+00556   JLE   0, 00566      // (suite)
+65444   LIT  C'STOV'        // 
+00560   LDM  14, 65444      // (suite)
+00564   HALT  0, 0          // (suite)
+00566   LDM   1, 00004 (11) // Affecter la valeur de x#1 (variable target)
+00570   STM   1, 00000 (12) // à this, dans le nouvel environnement.
+00574   LDM   1, 00000 (1)  // R_1 est le niveau de la variable target
+00578   LDA   2, 00010      // Calculer le maximum entre
+00582   COMP  1, 2          // ce niveau et le niveau 
+00584   JLE   0, 00592      // de définition maximum de
+00588   LDA   1, 00000 (2)  // la méthode  m8(0).
+00592   MULA  1, 00004      // R_1 est le déplacement dans la dispatch array.
+00596   ADDA  1, 00030      // Mem[R_1] contient l'adresse de la méthode à exécuter
+00600   LDM   1, 00000 (1)  // R_1 contient l'adresse de la méthode à exécuter.
+00604   JUMP 10, 00000 (1)  // Saut au début de la méthode m8(0).
+00608   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab6 : write(#2) ; go to lab5]
+00612   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65440   LIT  C'OUT:'        // (suite)
+00616   LDM  14, 65440      // (suite)
+00620   HALT  0, 0          // (suite)
+// [ lab5 : #2 := x#1.m9() ; go to lab4]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+00622   LDA   0, 00004 (12) // (suite)
+00626   COMP  0, 13         // (suite)
+00628   JLE   0, 00638      // (suite)
+65436   LIT  C'STOV'        // 
+00632   LDM  14, 65436      // (suite)
+00636   HALT  0, 0          // (suite)
+00638   LDM   1, 00004 (11) // Affecter la valeur de x#1 (variable target)
+00642   STM   1, 00000 (12) // à this, dans le nouvel environnement.
+00646   LDM   1, 00000 (1)  // R_1 est le niveau de la variable target
+00650   LDA   2, 00001      // Calculer le maximum entre
+00654   COMP  1, 2          // ce niveau et le niveau 
+00656   JLE   0, 00664      // de définition maximum de
+00660   LDA   1, 00000 (2)  // la méthode  m9(0).
+00664   MULA  1, 00004      // R_1 est le déplacement dans la dispatch array.
+00668   ADDA  1, 00022      // Mem[R_1] contient l'adresse de la méthode à exécuter
+00672   LDM   1, 00000 (1)  // R_1 contient l'adresse de la méthode à exécuter.
+00676   JUMP 10, 00000 (1)  // Saut au début de la méthode m9(0).
+00680   STM   0, 00008 (11) // Placer le résultat dans #2.
+// [ lab4 : write(#2) ; go to lab3]
+00684   LDM  15, 00008 (11) // Afficher la valeur de #2.
+65432   LIT  C'OUT:'        // (suite)
+00688   LDM  14, 65432      // (suite)
+00692   HALT  0, 0          // (suite)
+// end of method main : lab3 result#0
+00694   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00698   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00702   LDM  11, 00028 (12) // Restaurer F.
+00706   LDM  10, 00032 (12) // Mettre l'adresse de retour dans R.
+00710   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m2()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00714   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+00718   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00720   JLE   0, 00730      // Si elle est inférieure ou égale, c'est OK.
+65428   LIT  C'STOV'        // 
+00724   LDM  14, 65428      // Sinon, afficher STack OVerflow.
+00728   HALT  0, 0          // Arrêter le programme.
+00730   STM  11, 00008 (12) // Stocker F.
+00734   STM  10, 00012 (12) // Stocker R.
+00738   LDA  11, 00000 (12) // F := S.
+00742   ADDA 12, 00016      // Augmenter S.
+// [ lab40 : x#1 := 0 ; go to lab39]
+00746   LDA   0, 00000      // R_0 := 0
+00750   STM   0, 00004 (11) // x#1 := R_0
+// [ lab39 : x#1 := 0 - 15 ; go to lab38]
+00754   LDA   0, 00000      // R_0 := 0
+00758   LDA   1, 00015      // R_1 := 15
+00762   SUB   0, 1          // R_0 := R_0 - R_1
+00764   STM   0, 00004 (11) // x#1 := R_0
+// [ lab38 : x#1 := 100000 ; go to lab37]
+65424   LIT  I(100000)      // 
+00768   LDM   0, 65424      // R_0 := 100000
+00772   STM   0, 00004 (11) // x#1 := R_0
+// [ lab37 : x#1 := x#1 + x#1 ; go to lab36]
+00776   LDM   0, 00004 (11) // R_0 := x#1
+00780   LDM   1, 00004 (11) // R_1 := x#1
+00784   ADD   0, 1          // R_0 := R_0 + R_1
+00786   STM   0, 00004 (11) // x#1 := R_0
+// [ lab36 : x#1 := x#1 - 1 ; go to lab35]
+00790   LDM   0, 00004 (11) // R_0 := x#1
+00794   LDA   1, 00001      // R_1 := 1
+00798   SUB   0, 1          // R_0 := R_0 - R_1
+00800   STM   0, 00004 (11) // x#1 := R_0
+// [ lab35 : x#1 := x#1 / x#1 ; go to lab34]
+00804   LDM   0, 00004 (11) // R_0 := x#1
+00808   LDM   1, 00004 (11) // R_1 := x#1
+00812   DIV   0, 1          // R_0 := R_0 / R_1
+00814   STM   0, 00004 (11) // x#1 := R_0
+// [ lab34 : x#1 := x#1 * x#1 ; go to lab33]
+00818   LDM   0, 00004 (11) // R_0 := x#1
+00822   LDM   1, 00004 (11) // R_1 := x#1
+00826   MUL   0, 1          // R_0 := R_0 * R_1
+00828   STM   0, 00004 (11) // x#1 := R_0
+// [ lab33 : x#1 := x#1 % x#1 ; go to lab32]
+00832   LDM   0, 00004 (11) // R_0 := x#1
+00836   LDM   1, 00004 (11) // R_1 := x#1
+00840   DIV   0, 1          // R_1 := R_0 % R_1
+00842   LDA   0, 00000 (1)  // R_0 := R_1
+00846   STM   0, 00004 (11) // x#1 := R_0
+// [ lab32 : result#0 := x#1 ; go to lab31]
+00850   LDM   0, 00004 (11) // R_0 := x#1
+00854   STM   0, 00000 (11) // result#0 := R_0
+// end of method m2 : lab31 result#0
+00858   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00862   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00866   LDM  11, 00008 (12) // Restaurer F.
+00870   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+00874   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method methodeAvecUnNomTresLong()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00878   LDA   0, 00012 (12) // R_0 contient la nouvelle valeur de S.
+00882   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00884   JLE   0, 00894      // Si elle est inférieure ou égale, c'est OK.
+65420   LIT  C'STOV'        // 
+00888   LDM  14, 65420      // Sinon, afficher STack OVerflow.
+00892   HALT  0, 0          // Arrêter le programme.
+00894   STM  11, 00004 (12) // Stocker F.
+00898   STM  10, 00008 (12) // Stocker R.
+00902   LDA  11, 00000 (12) // F := S.
+00906   ADDA 12, 00012      // Augmenter S.
+// [ lab42 : result#0 := 1111111111 ; go to lab41]
+65416   LIT  I(1111111111)  // 
+00910   LDM   0, 65416      // R_0 := 1111111111
+00914   STM   0, 00000 (11) // result#0 := R_0
+// end of method methodeAvecUnNomTresLong : lab41 result#0
+00918   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+00922   LDA  12, 00000 (11) // Restaurer S (S:= F).
+00926   LDM  11, 00004 (12) // Restaurer F.
+00930   LDM  10, 00008 (12) // Mettre l'adresse de retour dans R.
+00934   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m3()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+00938   LDA   0, 00020 (12) // R_0 contient la nouvelle valeur de S.
+00942   COMP  0, 13         // Comparer cette valeur avec celle de H.
+00944   JLE   0, 00954      // Si elle est inférieure ou égale, c'est OK.
+65412   LIT  C'STOV'        // 
+00948   LDM  14, 65412      // Sinon, afficher STack OVerflow.
+00952   HALT  0, 0          // Arrêter le programme.
+00954   STM  11, 00012 (12) // Stocker F.
+00958   STM  10, 00016 (12) // Stocker R.
+00962   LDA  11, 00000 (12) // F := S.
+00966   ADDA 12, 00020      // Augmenter S.
+// [ lab59 : y#1 := 237 ; go to lab58]
+00970   LDA   0, 00237      // R_0 := 237
+00974   STM   0, 00004 (11) // y#1 := R_0
+// [ lab58 : x#2 := 0 - 3 ; go to lab57]
+00978   LDA   0, 00000      // R_0 := 0
+00982   LDA   1, 00003      // R_1 := 3
+00986   SUB   0, 1          // R_0 := R_0 - R_1
+00988   STM   0, 00008 (11) // x#2 := R_0
+// [ lab57 : if y#1 == x#2 then go to lab56 else go to lab55]
+00992   LDM   0, 00004 (11) // R_0 := y#1
+00996   LDM   1, 00008 (11) // R_1 := x#2
+01000   COMP  0, 1          // 
+01002   JNE   0, 01014      // Si R_0 != R_1 aller à lab55
+// [ lab56 : y#1 := x#2 ; go to lab55]
+01006   LDM   0, 00008 (11) // R_0 := x#2
+01010   STM   0, 00004 (11) // y#1 := R_0
+// [ lab55 : if y#1 == x#2 then go to lab54 else go to lab53]
+01014   LDM   0, 00004 (11) // R_0 := y#1
+01018   LDM   1, 00008 (11) // R_1 := x#2
+01022   COMP  0, 1          // 
+01024   JNE   0, 01036      // Si R_0 != R_1 aller à lab53
+// [ lab54 : y#1 := x#2 ; go to lab53]
+01028   LDM   0, 00008 (11) // R_0 := x#2
+01032   STM   0, 00004 (11) // y#1 := R_0
+// [ lab53 : if x#2 < y#1 then go to lab51 else go to lab52]
+01036   LDM   0, 00008 (11) // R_0 := x#2
+01040   LDM   1, 00004 (11) // R_1 := y#1
+01044   COMP  0, 1          // 
+01046   JGE   0, 01160      // Si R_0 >= R_1 aller à lab52
+// [ lab51 : if y#1 < x#2 then go to lab49 else go to lab50]
+01050   LDM   0, 00004 (11) // R_0 := y#1
+01054   LDM   1, 00008 (11) // R_1 := x#2
+01058   COMP  0, 1          // 
+01060   JGE   0, 01148      // Si R_0 >= R_1 aller à lab50
+// [ lab49 : x#2 := 0 ; go to lab48]
+01064   LDA   0, 00000      // R_0 := 0
+01068   STM   0, 00008 (11) // x#2 := R_0
+// [ lab48 : if y#1 < x#2 then go to lab47 else go to lab46]
+01072   LDM   0, 00004 (11) // R_0 := y#1
+01076   LDM   1, 00008 (11) // R_1 := x#2
+01080   COMP  0, 1          // 
+01082   JGE   0, 01094      // Si R_0 >= R_1 aller à lab46
+// [ lab47 : y#1 := 0 ; go to lab46]
+01086   LDA   0, 00000      // R_0 := 0
+01090   STM   0, 00004 (11) // y#1 := R_0
+// [ lab46 : if x#2 < y#1 then go to lab44 else go to lab45]
+01094   LDM   0, 00008 (11) // R_0 := x#2
+01098   LDM   1, 00004 (11) // R_1 := y#1
+01102   COMP  0, 1          // 
+01104   JGE   0, 01136      // Si R_0 >= R_1 aller à lab45
+// [ lab44 : result#0 := 3 ; go to lab43]
+01108   LDA   0, 00003      // R_0 := 3
+01112   STM   0, 00000 (11) // result#0 := R_0
+// end of method m3 : lab43 result#0
+01116   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01120   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01124   LDM  11, 00012 (12) // Restaurer F.
+01128   LDM  10, 00016 (12) // Mettre l'adresse de retour dans R.
+01132   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// [ lab45 : y#1 := 237 ; go to lab44]
+01136   LDA   0, 00237      // R_0 := 237
+01140   STM   0, 00004 (11) // y#1 := R_0
+01144   JUMP  0, 01108      // Aller à lab44.
+// [ lab50 : y#1 := 237 ; go to lab48]
+01148   LDA   0, 00237      // R_0 := 237
+01152   STM   0, 00004 (11) // y#1 := R_0
+01156   JUMP  0, 01072      // Aller à lab48.
+// [ lab52 : x#2 := 0 ; go to lab51]
+01160   LDA   0, 00000      // R_0 := 0
+01164   STM   0, 00008 (11) // x#2 := R_0
+01168   JUMP  0, 01050      // Aller à lab51.
+// method m4()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01172   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+01176   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01178   JLE   0, 01188      // Si elle est inférieure ou égale, c'est OK.
+65408   LIT  C'STOV'        // 
+01182   LDM  14, 65408      // Sinon, afficher STack OVerflow.
+01186   HALT  0, 0          // Arrêter le programme.
+01188   STM  11, 00008 (12) // Stocker F.
+01192   STM  10, 00012 (12) // Stocker R.
+01196   LDA  11, 00000 (12) // F := S.
+01200   ADDA 12, 00016      // Augmenter S.
+// [ lab64 : x#1 := 0 ; go to lab63]
+01204   LDA   0, 00000      // R_0 := 0
+01208   STM   0, 00004 (11) // x#1 := R_0
+// [ lab63 : x#1 := 1 ; go to lab62]
+01212   LDA   0, 00001      // R_0 := 1
+01216   STM   0, 00004 (11) // x#1 := R_0
+// [ lab62 : x#1 := 2 ; go to lab61]
+01220   LDA   0, 00002      // R_0 := 2
+01224   STM   0, 00004 (11) // x#1 := R_0
+// [ lab61 : result#0 := 4 ; go to lab60]
+01228   LDA   0, 00004      // R_0 := 4
+01232   STM   0, 00000 (11) // result#0 := R_0
+// end of method m4 : lab60 result#0
+01236   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01240   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01244   LDM  11, 00008 (12) // Restaurer F.
+01248   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+01252   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m5()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01256   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+01260   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01262   JLE   0, 01272      // Si elle est inférieure ou égale, c'est OK.
+65404   LIT  C'STOV'        // 
+01266   LDM  14, 65404      // Sinon, afficher STack OVerflow.
+01270   HALT  0, 0          // Arrêter le programme.
+01272   STM  11, 00008 (12) // Stocker F.
+01276   STM  10, 00012 (12) // Stocker R.
+01280   LDA  11, 00000 (12) // F := S.
+01284   ADDA 12, 00016      // Augmenter S.
+// [ lab85 : x#1 := 2 ; go to lab83]
+01288   LDA   0, 00002      // R_0 := 2
+01292   STM   0, 00004 (11) // x#1 := R_0
+// [ lab83 : if x#1 == 0 then go to lab80 else go to lab82]
+01296   LDM   0, 00004 (11) // R_0 := x#1
+01300   LDA   1, 00000      // R_1 := 0
+01304   COMP  0, 1          // 
+01306   JNE   0, 01498      // Si R_0 != R_1 aller à lab82
+// [ lab80 : if x#1 == 0 then go to lab79 else go to lab77]
+01310   LDM   0, 00004 (11) // R_0 := x#1
+01314   LDA   1, 00000      // R_1 := 0
+01318   COMP  0, 1          // 
+01320   JNE   0, 01342      // Si R_0 != R_1 aller à lab77
+// [ lab79 : skip ; go to lab81]
+// [ lab81 : x#1 := x#1 - 1 ; go to lab80]
+01324   LDM   0, 00004 (11) // R_0 := x#1
+01328   LDA   1, 00001      // R_1 := 1
+01332   SUB   0, 1          // R_0 := R_0 - R_1
+01334   STM   0, 00004 (11) // x#1 := R_0
+01338   JUMP  0, 01310      // Aller à lab80.
+// [ lab77 : if x#1 < 0 then go to lab76 else go to lab74]
+01342   LDM   0, 00004 (11) // R_0 := x#1
+01346   LDA   1, 00000      // R_1 := 0
+01350   COMP  0, 1          // 
+01352   JGE   0, 01374      // Si R_0 >= R_1 aller à lab74
+// [ lab76 : skip ; go to lab78]
+// [ lab78 : x#1 := x#1 + 3 ; go to lab77]
+01356   LDM   0, 00004 (11) // R_0 := x#1
+01360   LDA   1, 00003      // R_1 := 3
+01364   ADD   0, 1          // R_0 := R_0 + R_1
+01366   STM   0, 00004 (11) // x#1 := R_0
+01370   JUMP  0, 01342      // Aller à lab77.
+// [ lab74 : if 0 < x#1 then go to lab73 else go to lab71]
+01374   LDA   0, 00000      // R_0 := 0
+01378   LDM   1, 00004 (11) // R_1 := x#1
+01382   COMP  0, 1          // 
+01384   JGE   0, 01406      // Si R_0 >= R_1 aller à lab71
+// [ lab73 : skip ; go to lab75]
+// [ lab75 : x#1 := x#1 - 4 ; go to lab74]
+01388   LDM   0, 00004 (11) // R_0 := x#1
+01392   LDA   1, 00004      // R_1 := 4
+01396   SUB   0, 1          // R_0 := R_0 - R_1
+01398   STM   0, 00004 (11) // x#1 := R_0
+01402   JUMP  0, 01374      // Aller à lab74.
+// [ lab71 : if 0 < x#1 then go to lab68 else go to lab70]
+01406   LDA   0, 00000      // R_0 := 0
+01410   LDM   1, 00004 (11) // R_1 := x#1
+01414   COMP  0, 1          // 
+01416   JGE   0, 01480      // Si R_0 >= R_1 aller à lab70
+// [ lab68 : if x#1 < 0 then go to lab66 else go to lab67]
+01420   LDM   0, 00004 (11) // R_0 := x#1
+01424   LDA   1, 00000      // R_1 := 0
+01428   COMP  0, 1          // 
+01430   JGE   0, 01462      // Si R_0 >= R_1 aller à lab67
+// [ lab66 : result#0 := 5 ; go to lab65]
+01434   LDA   0, 00005      // R_0 := 5
+01438   STM   0, 00000 (11) // result#0 := R_0
+// end of method m5 : lab65 result#0
+01442   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01446   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01450   LDM  11, 00008 (12) // Restaurer F.
+01454   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+01458   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// [ lab67 : skip ; go to lab69]
+// [ lab69 : x#1 := x#1 - 6 ; go to lab68]
+01462   LDM   0, 00004 (11) // R_0 := x#1
+01466   LDA   1, 00006      // R_1 := 6
+01470   SUB   0, 1          // R_0 := R_0 - R_1
+01472   STM   0, 00004 (11) // x#1 := R_0
+01476   JUMP  0, 01420      // Aller à lab68.
+// [ lab70 : skip ; go to lab72]
+// [ lab72 : x#1 := x#1 + 5 ; go to lab71]
+01480   LDM   0, 00004 (11) // R_0 := x#1
+01484   LDA   1, 00005      // R_1 := 5
+01488   ADD   0, 1          // R_0 := R_0 + R_1
+01490   STM   0, 00004 (11) // x#1 := R_0
+01494   JUMP  0, 01406      // Aller à lab71.
+// [ lab82 : skip ; go to lab84]
+// [ lab84 : x#1 := x#1 - 1 ; go to lab83]
+01498   LDM   0, 00004 (11) // R_0 := x#1
+01502   LDA   1, 00001      // R_1 := 1
+01506   SUB   0, 1          // R_0 := R_0 - R_1
+01508   STM   0, 00004 (11) // x#1 := R_0
+01512   JUMP  0, 01296      // Aller à lab83.
+// method m6(a, b, c, d)
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01516   LDA   0, 00028 (12) // R_0 contient la nouvelle valeur de S.
+01520   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01522   JLE   0, 01532      // Si elle est inférieure ou égale, c'est OK.
+65400   LIT  C'STOV'        // 
+01526   LDM  14, 65400      // Sinon, afficher STack OVerflow.
+01530   HALT  0, 0          // Arrêter le programme.
+01532   STM  11, 00020 (12) // Stocker F.
+01536   STM  10, 00024 (12) // Stocker R.
+01540   LDA  11, 00000 (12) // F := S.
+01544   ADDA 12, 00028      // Augmenter S.
+// [ lab87 : result#0 := 6 ; go to lab86]
+01548   LDA   0, 00006      // R_0 := 6
+01552   STM   0, 00000 (11) // result#0 := R_0
+// end of method m6 : lab86 result#0
+01556   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01560   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01564   LDM  11, 00020 (12) // Restaurer F.
+01568   LDM  10, 00024 (12) // Mettre l'adresse de retour dans R.
+01572   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m7()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01576   LDA   0, 00032 (12) // R_0 contient la nouvelle valeur de S.
+01580   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01582   JLE   0, 01592      // Si elle est inférieure ou égale, c'est OK.
+65396   LIT  C'STOV'        // 
+01586   LDM  14, 65396      // Sinon, afficher STack OVerflow.
+01590   HALT  0, 0          // Arrêter le programme.
+01592   STM  11, 00024 (12) // Stocker F.
+01596   STM  10, 00028 (12) // Stocker R.
+01600   LDA  11, 00000 (12) // F := S.
+01604   ADDA 12, 00032      // Augmenter S.
+// [ lab94 : #2 := 2 ; go to lab93]
+01608   LDA   0, 00002      // R_0 := 2
+01612   STM   0, 00008 (11) // #2 := R_0
+// [ lab93 : #3 := null ; go to lab92]
+01616   LDA   0, 00000      // Mettre 0 (null) dans R_0.
+01620   STM   0, 00012 (11) // #3 := R_0
+// [ lab92 : #4 := 3 - 5 ; go to lab91]
+01624   LDA   0, 00003      // R_0 := 3
+01628   LDA   1, 00005      // R_1 := 5
+01632   SUB   0, 1          // R_0 := R_0 - R_1
+01634   STM   0, 00016 (11) // #4 := R_0
+// [ lab91 : #5 := 7 ; go to lab90]
+01638   LDA   0, 00007      // R_0 := 7
+01642   STM   0, 00020 (11) // #5 := R_0
+// [ lab90 : x#1 := m6(#2, #3, #4, #5) ; go to lab89]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+01646   LDA   0, 00020 (12) // (suite)
+01650   COMP  0, 13         // (suite)
+01652   JLE   0, 01662      // (suite)
+65392   LIT  C'STOV'        // 
+01656   LDM  14, 65392      // (suite)
+01660   HALT  0, 0          // (suite)
+01662   LDM   0, 00008 (11) // Affecter le paramètre effectif #2
+01666   STM   0, 00004 (12) // au 1-ème paramètre formel.
+01670   LDM   0, 00012 (11) // Affecter le paramètre effectif #3
+01674   STM   0, 00008 (12) // au 2-ème paramètre formel.
+01678   LDM   0, 00016 (11) // Affecter le paramètre effectif #4
+01682   STM   0, 00012 (12) // au 3-ème paramètre formel.
+01686   LDM   0, 00020 (11) // Affecter le paramètre effectif #5
+01690   STM   0, 00016 (12) // au 4-ème paramètre formel.
+01694   JUMP 10, 01516      // Saut au début de la méthode statique m6(4).
+01698   STM   0, 00004 (11) // Placer le résultat dans x#1.
+// [ lab89 : result#0 := x#1 + 1 ; go to lab88]
+01702   LDM   0, 00004 (11) // R_0 := x#1
+01706   LDA   1, 00001      // R_1 := 1
+01710   ADD   0, 1          // R_0 := R_0 + R_1
+01712   STM   0, 00000 (11) // result#0 := R_0
+// end of method m7 : lab88 result#0
+01716   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01720   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01724   LDM  11, 00024 (12) // Restaurer F.
+01728   LDM  10, 00028 (12) // Mettre l'adresse de retour dans R.
+01732   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m8/0()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01736   LDA   0, 00012 (12) // R_0 contient la nouvelle valeur de S.
+01740   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01742   JLE   0, 01752      // Si elle est inférieure ou égale, c'est OK.
+65388   LIT  C'STOV'        // 
+01746   LDM  14, 65388      // Sinon, afficher STack OVerflow.
+01750   HALT  0, 0          // Arrêter le programme.
+01752   STM  11, 00004 (12) // Stocker F.
+01756   STM  10, 00008 (12) // Stocker R.
+01760   LDA  11, 00000 (12) // F := S.
+01764   ADDA 12, 00012      // Augmenter S.
+// [ lab96 : result#0 := 8 ; go to lab95]
+01768   LDA   0, 00008      // R_0 := 8
+01772   STM   0, 00000 (11) // result#0 := R_0
+// end of method m8 : lab95 result#0
+01776   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01780   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01784   LDM  11, 00004 (12) // Restaurer F.
+01788   LDM  10, 00008 (12) // Mettre l'adresse de retour dans R.
+01792   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m8/10()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01796   LDA   0, 00012 (12) // R_0 contient la nouvelle valeur de S.
+01800   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01802   JLE   0, 01812      // Si elle est inférieure ou égale, c'est OK.
+65384   LIT  C'STOV'        // 
+01806   LDM  14, 65384      // Sinon, afficher STack OVerflow.
+01810   HALT  0, 0          // Arrêter le programme.
+01812   STM  11, 00004 (12) // Stocker F.
+01816   STM  10, 00008 (12) // Stocker R.
+01820   LDA  11, 00000 (12) // F := S.
+01824   ADDA 12, 00012      // Augmenter S.
+// [ lab98 : result#0 := super.m8() ; go to lab97]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+01828   LDA   0, 00004 (12) // (suite)
+01832   COMP  0, 13         // (suite)
+01834   JLE   0, 01844      // (suite)
+65380   LIT  C'STOV'        // 
+01838   LDM  14, 65380      // (suite)
+01842   HALT  0, 0          // (suite)
+01844   LDM   1, 00000 (11) // Copier la valeur de this
+01848   STM   1, 00000 (12) // dans le nouvel environnement.
+01852   JUMP 10, 01736      // Sauter au début de la méthode m8/9(0).
+01856   STM   0, 00000 (11) // Placer le résultat dans result#0.
+// end of method m8 : lab97 result#0
+01860   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+01864   LDA  12, 00000 (11) // Restaurer S (S:= F).
+01868   LDM  11, 00004 (12) // Restaurer F.
+01872   LDM  10, 00008 (12) // Mettre l'adresse de retour dans R.
+01876   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m9/0()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+01880   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+01884   COMP  0, 13         // Comparer cette valeur avec celle de H.
+01886   JLE   0, 01896      // Si elle est inférieure ou égale, c'est OK.
+65376   LIT  C'STOV'        // 
+01890   LDM  14, 65376      // Sinon, afficher STack OVerflow.
+01894   HALT  0, 0          // Arrêter le programme.
+01896   STM  11, 00008 (12) // Stocker F.
+01900   STM  10, 00012 (12) // Stocker R.
+01904   LDA  11, 00000 (12) // F := S.
+01908   ADDA 12, 00016      // Augmenter S.
+// [ lab104 : x#1 := new/3 ; go to lab103]
+// Vérifier s'il existe assez de mémoire libre pour créer un nouvel objet de niveau 3.
+01912   SUBA 13, 00016      //  H := H - (la taille du nouvel objet).
+01916   COMP 12, 13         // Vérifier que S <= H.
+01918   JLE   0, 01928      // Continuer si c'est OK.
+65372   LIT  C'STOV'        // 
+01922   LDM  14, 65372      // Afficher STack OVerflow.
+01926   HALT  0, 0          // Arrêt du programme
+01928   LDA   0, 00003      // Mettre le niveau (3)
+01932   STM   0, 00000 (13) // dans le premier mot de l'objet.
+01936   STM  13, 00004 (11) // Mettre l'adresse de l'objet dans x#1.
+// [ lab103 : x#1.1 := 9 ; go to lab102]
+01940   LDA   0, 00009      // R_0 := 9
+01944   LDM   1, 00004 (11) // R_1 := x#1
+01948   LDA   1, 00004 (1)  // R_1 := adresse(x#1.1).
+01952   STM   0, 00000 (1)  // x#1.1 := R_0
+// [ lab102 : x#1.2 := null ; go to lab101]
+01956   LDA   0, 00000      // Mettre 0 (null) dans R_0.
+01960   LDM   1, 00004 (11) // R_1 := x#1
+01964   LDA   1, 00008 (1)  // R_1 := adresse(x#1.2).
+01968   STM   0, 00000 (1)  // x#1.2 := R_0
+// [ lab101 : x#1.3 := this ; go to lab100]
+01972   LDM   0, 00000 (11) // Mettre la valeur de this dans R_0.
+01976   LDM   1, 00004 (11) // R_1 := x#1
+01980   LDA   1, 00012 (1)  // R_1 := adresse(x#1.3).
+01984   STM   0, 00000 (1)  // x#1.3 := R_0
+// [ lab100 : result#0 := x#1 ; go to lab99]
+01988   LDM   0, 00004 (11) // R_0 := x#1
+01992   STM   0, 00000 (11) // result#0 := R_0
+// end of method m9 : lab99 result#0
+01996   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+02000   LDA  12, 00000 (11) // Restaurer S (S:= F).
+02004   LDM  11, 00008 (12) // Restaurer F.
+02008   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+02012   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+// method m9/1()
+// Tester s'il reste de la place pour allouer un nouvel environnement (frame).
+02016   LDA   0, 00016 (12) // R_0 contient la nouvelle valeur de S.
+02020   COMP  0, 13         // Comparer cette valeur avec celle de H.
+02022   JLE   0, 02032      // Si elle est inférieure ou égale, c'est OK.
+65368   LIT  C'STOV'        // 
+02026   LDM  14, 65368      // Sinon, afficher STack OVerflow.
+02030   HALT  0, 0          // Arrêter le programme.
+02032   STM  11, 00008 (12) // Stocker F.
+02036   STM  10, 00012 (12) // Stocker R.
+02040   LDA  11, 00000 (12) // F := S.
+02044   ADDA 12, 00016      // Augmenter S.
+// [ lab107 : x#1 := super.m9() ; go to lab106]
+// Vérifier qu'il reste assez de place pour passer les paramètres.
+02048   LDA   0, 00004 (12) // (suite)
+02052   COMP  0, 13         // (suite)
+02054   JLE   0, 02064      // (suite)
+65364   LIT  C'STOV'        // 
+02058   LDM  14, 65364      // (suite)
+02062   HALT  0, 0          // (suite)
+02064   LDM   1, 00000 (11) // Copier la valeur de this
+02068   STM   1, 00000 (12) // dans le nouvel environnement.
+02072   JUMP 10, 01880      // Sauter au début de la méthode m9/0(0).
+02076   STM   0, 00004 (11) // Placer le résultat dans x#1.
+// [ lab106 : result#0 := x#1.1 ; go to lab105]
+02080   LDM   1, 00004 (11) // R_1 := x#1
+02084   LDM   0, 00004 (1)  // R_0 := x#1.1
+02088   STM   0, 00000 (11) // result#0 := R_0
+// end of method m9 : lab105 result#0
+02092   LDM   0, 00000 (11) // Stocker le résultat en R_0.
+02096   LDA  12, 00000 (11) // Restaurer S (S:= F).
+02100   LDM  11, 00008 (12) // Restaurer F.
+02104   LDM  10, 00012 (12) // Mettre l'adresse de retour dans R.
+02108   JUMP  0, 00000 (10) // Retourner juste après l'instruction d'appel.
+00026   LIT  I(2016)        // Adresse de m9/1(0)
+00022   LIT  I(1880)        // Adresse de m9/0(0)
+00070   LIT  I(1796)        // Adresse de m8/10(0)
+00066   LIT  I(1736)        // Adresse de m8/0(0)
+00062   LIT  I(1736)        // Adresse de m8/0(0)
+00058   LIT  I(1736)        // Adresse de m8/0(0)
+00054   LIT  I(1736)        // Adresse de m8/0(0)
+00050   LIT  I(1736)        // Adresse de m8/0(0)
+00046   LIT  I(1736)        // Adresse de m8/0(0)
+00042   LIT  I(1736)        // Adresse de m8/0(0)
+00038   LIT  I(1736)        // Adresse de m8/0(0)
+00034   LIT  I(1736)        // Adresse de m8/0(0)
+00030   LIT  I(1736)        // Adresse de m8/0(0)
+

@@ -1,0 +1,14 @@
+main()
+{
+  x = 5 ;
+  y = fact(x) ;
+  write(y) ;
+}
+
+fact(x)
+{
+  if (x == 0)
+    return (1) ;
+  else
+    return ((x * fact((x - 1)))) ;
+}

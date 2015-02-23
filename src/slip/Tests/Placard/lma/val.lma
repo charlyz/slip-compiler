@@ -1,0 +1,45 @@
+//AAAAA COP  ii, aaaaaa(jj)//
+//AAAAA COPP ii, jj        //
+8678    LIT  F(1.2)        // a       
+9623    LIT  F(2)          // b
+23450   LIT  F(2.4)        // c
+12620   LIT  F(0.5)        // d
+// Sous-programme de calcul de a*b - c*d (en virgule flottante)
+// Liste des paramètres : a, b, c, d (par valeur) ; r (par adresse)
+// Postcondition        : r = a*b - c*d
+//AAAAA COP  ii, aaaaaa(jj)//
+//AAAAA COPP ii, jj        //
+3000    STM   2,   3050    // Sauver R2 à la fin du sous-programme.
+3004    STM   3,   3054    // Sauver R3 à la fin du sous-programme (derrière R2).
+3008    LDM   0,      0(1) // R0 = a
+3012    LDM   2,      4(1) // R2 = b
+3016    MULF  0, 2         // R0 = a * b
+3018    LDM   2,      8(1) // R2 = c
+3022    LDM   3,     12(1) // R3 = d
+3026    MULF  2, 3         // R2 = c * d
+3028    SUBF  0, 2         // R0 = a * b - c * d
+3030    LDM   1,     16(1) // R1 = ADR(r)
+3034    STM   0,      0(1) // r = a * b - c * d
+3038    LDM   2,   3050    // restaurer R2
+3042    LDM   3,   3054    // restaurer R3
+3046    JUMP  0,      0(15)// retour de sous-programme
+//
+// APPEL DU SOUS-PROGRAMME (PAR VALEUR)
+2000    LDM   1, 8678      //
+2004    STM   1, 2204      // Mot[2204] = a
+2008    LDM   1, 9623      //
+2012    STM   1, 2208      // Mot[2208] = b
+2016    LDM   1, 23450     //
+2020    STM   1, 2212      // Mot[2212] = c
+2024    LDM   1, 12620     //
+2028    STM   1, 2216      // Mot[2216] = d
+2032    LDA   1, 1000      //
+2036    STM   1, 2220      // Mot[2220] = ADR(r)
+2040    LDA   1, 2204      // R1 = ADRESSE(liste_des_pars.)
+2044    JUMP 15, 3000      // r = a * b - c* d
+// ... suite du programme
+2204    NOP   0, 0         // début de la liste des paramètres
+
+// ATTENTION : UN FICHIER LMA (DOIT )SE TERMINE(R) PAR UNE LIGNE VIDE.
+// AUTREMENT DIT : DEUX "RETURN" SUCCESSIFS.
+
